@@ -14,6 +14,9 @@ class Sudoku():
         self.board[pos] = val
         self.update_domain()
 
+    def allval_str(self):
+        return ''.join(str(s) for s in self.board.reshape(81))
+
     def get_domain(self):
         domain = {}
         for i in range(9):
@@ -62,8 +65,16 @@ class Sudoku():
         pass
 
 
-s = Sudoku('000000000302540000050301070000000004409006005023054790000000050700810000080060009')
-sol = s.backtrack()
-print(sol.board)
+def main():
+    infile = open('sudokus_start.txt', 'r')
+    outfile = open('output.txt', 'w')
+    for line in infile:
+        s = Sudoku(line[:-1])
+        s = s.backtrack()
+        outfile.write(s.allval_str() + ' BTS' + '\n')
+    infile.close()
+    outfile.close()
 
-#to be continued
+
+if __name__ == '__main__':
+    main()
