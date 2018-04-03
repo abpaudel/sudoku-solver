@@ -41,8 +41,8 @@ class Sudoku():
     def gameover(self):
         return False if len(self.domain) else True
 
-    def is_consistent(self):
-        return True if {} in self.domain else False
+    def consistent(self):
+        return False if set() in self.domain.values() else True
 
     def backtrack(self):
         if self.gameover():
@@ -51,6 +51,8 @@ class Sudoku():
         for value in var[1]:
             sudoku = self.clone()
             sudoku.set_value(var[0], value)
+            if not sudoku.consistent():
+                continue
             result = sudoku.backtrack()
             if result is not None:
                 return result
