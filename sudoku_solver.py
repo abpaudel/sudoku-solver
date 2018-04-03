@@ -3,15 +3,16 @@ import numpy as np
 
 class Sudoku():
 
-    def __init__(self, values = None, domain = None):
-        self.board = np.array(list(values)).astype(int).reshape(9, 9) if values else np.zeros(81).astype(int).reshape(9,9)
+    def __init__(self, values):
+        self.board = np.array(list(values)).astype(int).reshape(9, 9)
         self.domain = self.get_domain()
 
     def clone(self):
-        new = Sudoku()
-        new.board = np.array(self.board)
-        new.domain = dict(self.domain)
-        return new
+        return Sudoku(self.board.astype(str))
+
+    def set_value(self, pos, val):
+        self.board[pos] = val
+        self.update_domain()
 
     def get_domain(self):
         domain = {}
@@ -35,7 +36,7 @@ class Sudoku():
         return box_val
 
     def get_mrv(self):
-        return min(self.domain.items(), key=lambda x: len(x[1]))
+        return min(self.domain.items(), key = lambda x: len(x[1]))
 
     def gameover(self):
         return False if len(self.domain) else True
@@ -49,12 +50,15 @@ class Sudoku():
         var = self.get_mrv()
         for value in var[1]:
             sudoku = self.clone()
-            sudoku.board[var[0]] = value
-            sudoku.update_domain()
+            sudoku.set_value(var[0], value)
             result = sudoku.backtrack()
             if result is not None:
                 return result
         return None
+
+    def ac3(self):
+        pass
+
 
 s = Sudoku('000000000302540000050301070000000004409006005023054790000000050700810000080060009')
 sol = s.backtrack()
