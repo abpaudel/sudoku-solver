@@ -1,5 +1,5 @@
+import sys
 import numpy as np
-
 
 class Sudoku():
 
@@ -64,8 +64,14 @@ class Sudoku():
     def ac3(self):
         pass
 
-
 def main():
+    s = Sudoku(sys.argv[1])
+    s = s.backtrack()
+    outfile = open('output.txt', 'w')
+    outfile.write(s.allval_str() + ' BTS' + '\n')
+    outfile.close()
+
+def main2():
     infile = open('sudokus_start.txt', 'r')
     outfile = open('output.txt', 'w')
     for line in infile:
